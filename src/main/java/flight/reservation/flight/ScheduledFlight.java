@@ -3,6 +3,7 @@ package flight.reservation.flight;
 import flight.reservation.Airport;
 import flight.reservation.Passenger;
 import flight.reservation.plane.Helicopter;
+import flight.reservation.plane.IPlane;
 import flight.reservation.plane.PassengerDrone;
 import flight.reservation.plane.PassengerPlane;
 
@@ -29,19 +30,17 @@ public class ScheduledFlight extends Flight {
         this.currentPrice = currentPrice;
     }
 
+    // Need to change this method -----------------------------------
+
     public int getCrewMemberCapacity() throws NoSuchFieldException {
-        if (this.aircraft instanceof PassengerPlane) {
-            return ((PassengerPlane) this.aircraft).crewCapacity;
+        if (!(this.aircraft instanceof IPlane)){
+            throw new NoSuchFieldException("this aircraft has no information about its crew capacity");
+        } else{
+            return ((IPlane) this.aircraft).getCrewCapacity();
         }
-        if (this.aircraft instanceof Helicopter) {
-            return 2;
-        }
-        if (this.aircraft instanceof PassengerDrone) {
-            return 0;
-        }
-        throw new NoSuchFieldException("this aircraft has no information about its crew capacity");
     }
 
+    // ---------------------------------------------------
     public void addPassengers(List<Passenger> passengers) {
         this.passengers.addAll(passengers);
     }
@@ -50,18 +49,15 @@ public class ScheduledFlight extends Flight {
         this.passengers.removeAll(passengers);
     }
 
+    // Need to change this method -----------------------------------
     public int getCapacity() throws NoSuchFieldException {
-        if (this.aircraft instanceof PassengerPlane) {
-            return ((PassengerPlane) this.aircraft).passengerCapacity;
+        if (!(this.aircraft instanceof IPlane)) {
+            throw new NoSuchFieldException("this aircraft has no information about its capacity");
+        } else {
+            return ((IPlane) this.aircraft).getPassengerCapacity();
         }
-        if (this.aircraft instanceof Helicopter) {
-            return ((Helicopter) this.aircraft).getPassengerCapacity();
-        }
-        if (this.aircraft instanceof PassengerDrone) {
-            return 4;
-        }
-        throw new NoSuchFieldException("this aircraft has no information about its capacity");
     }
+    // ---------------------------------------------------
 
     public int getAvailableCapacity() throws NoSuchFieldException {
         return this.getCapacity() - this.passengers.size();

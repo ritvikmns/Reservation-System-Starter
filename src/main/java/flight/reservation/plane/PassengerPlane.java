@@ -1,6 +1,6 @@
 package flight.reservation.plane;
 
-public class PassengerPlane {
+public class PassengerPlane implements IPlane {
 
     public String model;
     public int passengerCapacity;
@@ -28,6 +28,15 @@ public class PassengerPlane {
             default:
                 throw new IllegalArgumentException(String.format("Model type '%s' is not recognized", model));
         }
+    }
+    public String getModel() {
+        return model;
+    }
+    public int getPassengerCapacity() {
+        return passengerCapacity;
+    }
+    public int getCrewCapacity() {
+        return crewCapacity;
     }
 
 }

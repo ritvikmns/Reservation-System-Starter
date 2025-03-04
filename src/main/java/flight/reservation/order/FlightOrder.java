@@ -40,11 +40,15 @@ public class FlightOrder extends Order {
         return valid;
     }
 
+// Factory -----------------------------------------------------------------
     public boolean processOrderWithCreditCardDetail(String number, Date expirationDate, String cvv) throws IllegalStateException {
         CreditCard creditCard = new CreditCard(number, expirationDate, cvv);
         return processOrderWithCreditCard(creditCard);
     }
+//    ----------------------------------------------------------------------
 
+
+//    Simplify ------------------------------------------------------------
     public boolean processOrderWithCreditCard(CreditCard creditCard) throws IllegalStateException {
         if (isClosed()) {
             // Payment is already proceeded
@@ -105,3 +109,4 @@ public class FlightOrder extends Order {
         }
     }
 }
+// --------------------------------------------------------
