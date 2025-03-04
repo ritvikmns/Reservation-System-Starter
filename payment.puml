@@ -1,0 +1,19 @@
+@startuml
+class flight.reservation.payment.CreditCard {
+- double amount
+- String number
+- Date date
+- String cvv
+- boolean valid
++ void setAmount(double)
++ double getAmount()
++ boolean isValid()
++ void setValid()
+}
+
+
+class flight.reservation.payment.Paypal {
++ {static} Map<String,String> DATA_BASE
+}
+
+@enduml
