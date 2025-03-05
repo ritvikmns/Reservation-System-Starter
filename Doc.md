@@ -351,3 +351,100 @@ With the Strategy Pattern in place, adding a new payment method is **straightfor
     - This makes the system **extensible** and **maintainable**.
     - The new payment method can be easily integrated into the system.
    
+## Before Refactoring 
+
+```plantuml
+
+@startuml
+class flight.reservation.payment.CreditCard {
+- double amount
+- String number
+- Date date
+- String cvv
+- boolean valid
++ void setAmount(double)
++ double getAmount()
++ boolean isValid()
++ void setValid()
+}
+
+
+class flight.reservation.payment.Paypal {
++ {static} Map<String,String> DATA_BASE
+}
+
+@enduml
+
+```
+
+## After Refactoring
+
+```plantuml
+@startuml
+class flight.reservation.order.FlightOrder {
+- List<ScheduledFlight> flights
+- PaymentStrategy paymentStrategy
+~ {static} List<String> noFlyList
++ void setPaymentStrategy(PaymentStrategy)
++ {static} List<String> getNoFlyList()
++ List<ScheduledFlight> getScheduledFlights()
+- boolean isOrderValid(Customer,List<String>,List<ScheduledFlight>)
++ boolean processOrderWithCreditCardDetail(String,Date,String)
++ boolean processOrder(PaymentStrategy)
++ boolean processOrderWithCreditCard(CreditCard)
+- boolean cardIsPresentAndValid(CreditCard)
++ boolean processOrderWithPayPal(String,String)
+}
+
+
+class flight.reservation.payment.CreditCard {
+- double amount
+- String number
+- Date date
+- String cvv
+- boolean valid
++ void setAmount(double)
++ double getAmount()
++ boolean isValid()
++ boolean pay(double)
++ void setValid()
+}
+
+
+interface flight.reservation.payment.PaymentStrategy {
+~ boolean pay(double)
+}
+
+class flight.reservation.order.Order {
+- UUID id
+- double price
+- boolean isClosed
+- Customer customer
+- List<Passenger> passengers
++ UUID getId()
++ double getPrice()
++ void setPrice(double)
++ Customer getCustomer()
++ void setCustomer(Customer)
++ List<Passenger> getPassengers()
++ void setPassengers(List<Passenger>)
++ boolean isClosed()
++ void setClosed()
+}
+
+
+class flight.reservation.payment.Paypal {
++ {static} Map<String,String> DATA_BASE
+- String email
+- String password
++ boolean pay(double)
+}
+
+
+
+
+flight.reservation.order.Order <|-- flight.reservation.order.FlightOrder
+flight.reservation.payment.PaymentStrategy <|.. flight.reservation.payment.CreditCard
+flight.reservation.payment.PaymentStrategy <|.. flight.reservation.payment.Paypal
+@enduml
+```
