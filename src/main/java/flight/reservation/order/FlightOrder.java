@@ -10,10 +10,10 @@ import java.util.Date;
 import java.util.List;
 
 public class FlightOrder extends Order {
-    private final List<ScheduledFlight> flights;
+    private List<ScheduledFlight> flights;
     static List<String> noFlyList = Arrays.asList("Peter", "Johannes");
 
-    public FlightOrder(List<ScheduledFlight> flights) {
+    public void setFlights(List<ScheduledFlight> flights) {
         this.flights = flights;
     }
 
